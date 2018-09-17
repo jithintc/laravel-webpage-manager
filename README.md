@@ -16,9 +16,11 @@ Add the Facade to your aliases
 'WebPage' => jithin\CubetWpm\Facades\WebPage::class,
 ```
 
-Publish the migration and commands 
+Publish the migrations and commands 
 ```
-$ php artisan vendor:publish
+$ php artisan vendor:publish -tag=migrations
+$ php artisan vendor:publish -tag=commands
+
 ```
 
 Then run 
