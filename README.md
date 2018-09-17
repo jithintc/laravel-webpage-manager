@@ -15,21 +15,42 @@ Add the Facade to your aliases
 ```
 'WebPage' => jithin\CubetWpm\Facades\WebPage::class,
 ```
-Publish the migrations, and run 
+
+Publish the migration and commands 
 ```
-$ php artisan vendor:publish --tag=migrations
+$ php artisan vendor:publish
+```
+
+Then run 
+```
 $ php artisan migrate
 ```
 
-Publish the migrations, and run 
+Generate WPM controller, views and routes
 ```
-$ php artisan vendor:publish --tag=views
-```
-
-Publish the commands (--views Only scaffold the wpm views, --force Overwrite existing views by default), and run 
-```
-$ php artisan vendor:publish --tag=commands
 $ php artisan make:wpm 
 ```
+```
+$ php artisan make:wpm --views (Only scaffold the wpm views), 
+$ php artisan make:wpm --force (Overwrite existing files by default)
+```
 
-###### Views and Controller files are now published and can be edited based on the project requirement.
+###### Views, Controller and Routes are now published and it can be customized based on the project requirement.
+###### Views include `layouts\app` blade; ignore include if there is no such layout blade.
+###### Check the `routes\web.php` to find the admin routes.
+
+## Usage
+Create new page in admin and use the page slug to invoke the page and specify the view file to be rendered. The default view will be `wpm\static`
+```
+WebPage::bind('slug', 'path\to\view')
+```
+
+Example:
+Create a new page with title 'About Us'. Go to Web Pages List and copy the slug 'about-us'.
+Then create new route
+```
+Route::get('/about', function () {
+	return WebPage::bind('about-us');
+});
+```
+
