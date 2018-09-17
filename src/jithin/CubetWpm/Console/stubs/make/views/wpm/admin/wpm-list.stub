@@ -1,0 +1,47 @@
+<!-- Modify this blade based on your theme layout-->
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-2">
+            <nav class="nav flex-column">
+              <a class="nav-link" href="{{ route('wpm-list') }}">List Web Pages</a>
+              <a class="nav-link" href="{{ route('wpm-create') }}">Create Web Pages</a>
+            </nav>
+        </div>
+        <div class="col-md-10">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Page Title</th>
+                  <th scope="col">Slug</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse($webpages as $key => $wp)
+                  <tr>
+                    <th scope="row">{{ ++$key }}</th>
+                    <td>{{ $wp->wp_title }}</td>
+                    <td>{{ $wp->wp_slug }}</td>
+                    <td>{{ $wp->wp_status }}</td>
+                    <td><a href="{{ route('wpm-view', ['wp_id'=>$wp->id]) }}">View</a> | 
+                    <a href="{{ route('wpm-edit', ['wp_id'=>$wp->id]) }}">Edit</a> | 
+                    <a href="{{ route('wpm-delete', ['wp_id'=>$wp->id]) }}">Delete</a></td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="7">
+                      No Web Pages!
+                    </td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

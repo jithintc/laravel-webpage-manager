@@ -1,0 +1,10 @@
+//WPM Admin Routes
+Route::group(['middleware' => [], 'prefix' => 'admin/wpm'], function () {
+  Route::get('/list', 'Admin\WpmController@index')->name('wpm-list');
+  Route::get('/add', 'Admin\WpmController@addWepPage')->name('wpm-add');
+  Route::post('/add', 'Admin\WpmController@createWepPage')->name('wpm-create');
+  Route::get('/view/{wp_id}', 'Admin\WpmController@viewWebPage')->name('wpm-view');
+  Route::get('/edit/{wp_id}', 'Admin\WpmController@editWebPage')->name('wpm-edit');
+  Route::post('/edit/{wp_id}', 'Admin\WpmController@updateWebPage')->name('wpm-update');
+  Route::get('/delete/{wp_id}', 'Admin\WpmController@deleteWebPage')->name('wpm-delete');
+});

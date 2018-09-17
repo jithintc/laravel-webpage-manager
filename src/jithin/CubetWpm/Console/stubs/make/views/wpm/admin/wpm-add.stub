@@ -1,0 +1,114 @@
+<!-- Modify this blade based on your theme layout-->
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-2">
+            <nav class="nav flex-column">
+              <a class="nav-link" href="{{ route('wpm-list') }}">List Web Pages</a>
+              <a class="nav-link" href="{{ route('wpm-create') }}">Create Web Pages</a>
+            </nav>
+        </div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">Add Web Page</div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ route('wpm-create') }}">
+                        @csrf
+
+                        <div class="form-group row">
+                            <label for="wp_title" class="col-md-12 col-form-label ">Page Title</label>
+
+                            <div class="col-md-12">
+                                <input id="wp_title" type="text" class="form-control{{ ($errors->has('wp_title') || $errors->has('wp_slug')) ? ' is-invalid' : '' }}" name="wp_title" value="{{ old('wp_title') }}"  autofocus>
+
+                                @if ($errors->has('wp_title'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('wp_title') }}</strong>
+                                    </span>
+                                @elseif ($errors->has('wp_slug'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('wp_slug') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="wp_sub_title" class="col-md-12 col-form-label ">Sub Title</label>
+
+                            <div class="col-md-12">
+                                <input id="wp_sub_title" type="text" class="form-control{{ $errors->has('wp_sub_title') ? ' is-invalid' : '' }}" name="wp_sub_title" value="{{ old('wp_sub_title') }}" >
+
+                                @if ($errors->has('wp_sub_title'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('wp_sub_title') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="wp_tags" class="col-md-12 col-form-label ">Tags</label>
+
+                            <div class="col-md-12">
+                                <input id="wp_tags" type="text" class="form-control{{ $errors->has('wp_tags') ? ' is-invalid' : '' }}" name="wp_tags" value="{{ old('wp_sub_title') }}" >
+
+                                @if ($errors->has('wp_tags'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('wp_tags') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="wp_content" class="col-md-12 col-form-label ">Content</label>
+
+                            <div class="col-md-12">
+                                <textarea id="wp_content" class="form-control{{ $errors->has('wp_content') ? ' is-invalid' : '' }}" name="wp_content" ></textarea>
+
+                                @if ($errors->has('wp_content'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('wp_content') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="wp_status" class="col-md-12 col-form-label ">Status</label>
+
+                            <div class="col-md-4 offset-md-right-8 text-md-left">
+                                <select id="wp_status" name="wp_status" class="custom-select" >
+                                  <option value="draft" selected>Draft</option>
+                                  <option value="published">Published</option>
+                                  <option value="inactive">Inactive</option>
+                                </select>
+                                @if ($errors->has('wp_status'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('wp_status') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-4 offset-md-right-8 text-md-left">
+                                <button type="submit" class="btn btn-primary">
+                                    Create
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea' });</script>
+@endsection

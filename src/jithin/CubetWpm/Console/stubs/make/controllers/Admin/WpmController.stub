@@ -1,0 +1,158 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use jithin\CubetWpm\Models\WebPage;
+use Validator;
+
+class WpmController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //$this->middleware('auth');
+    }
+
+    /**
+     * Show the web pages list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+      $webpages = WebPage::paginate(10);
+      return view('wpm/admin/wpm-list', compact('webpages'));
+    }
+
+    /**
+     * Add the web page - form.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function addWepPage()
+    {
+        return view('wpm/admin/wpm-add');
+    }
+
+    /**
+     * Create the web page.
+     * @param form_data
+     * @return \Illuminate\Http\Response
+     */
+    public function createWepPage(Request $request)
+    {
+        $request->request->set('wp_slug', str_slug($request->wp_title, '-'));
+        $validator = Validator::make($request->all(), [
+                'wp_title' => 'required|unique:web_pages,wp_title',
+                'wp_content' => 'required',
+                'wp_slug' => 'required|unique:web_pages,wp_slug',
+                'wp_status' => 'required',
+            ],
+            [
+                'wp_title.required' => trans('wpm.wp_title_required'),  
+                'wp_content.required' => trans('wpm.wp_content_required'),    
+                'wp_slug.required' => trans('wpm.wp_slug_required'), 
+                'wp_slug.unique' => trans('wpm.wp_slug_unique'),   
+                'wp_status.required' => trans('wpm.wp_status_required'),   
+            ]);
+        if ($validator->fails()) {
+          $error_message = $validator->errors()->getMessages();
+          return redirect()->back()->withInput()->withErrors($validator);
+        }
+
+        $WebPage::create([
+          'wp_slug' => $request->wp_slug,
+          'wp_title' => $request->wp_title,
+          'wp_content' => $request->wp_content,
+          'wp_tags' => ($request->wp_tags) ?? null,
+          'wp_status' => ($request->wp_status) ?? 'draft'
+        ]);
+        
+        return redirect()->route('wpm-list')->with('is_created', true);
+    }
+
+    /**
+     * View the web page.
+     * @param $wp_id
+     * @return \Illuminate\Http\Response
+     */
+    public function viewWebPage($wp_id)
+    {
+      $wp = WebPage::where([
+            'id' => $wp_id
+        ])->firstOrFail();
+      return view('wpm/admin/wpm-view', compact('wp'));
+    }
+
+    /**
+     * Edit the web page - form.
+     * @param $wp_id
+     * @return \Illuminate\Http\Response
+     */
+    public function editWebPage($wp_id)
+    {
+        $wp = WebPage::where([
+            'id' => $wp_id
+        ])->firstOrFail();
+        return view('wpm/admin/wpm-edit', compact('wp'));
+    }
+
+    /**
+     * Update the web page.
+     * @param form_data
+     * @return \Illuminate\Http\Response
+     */
+    public function updateWebPage(Request $request)
+    {
+        $request->request->set('wp_slug', str_slug($request->wp_title, '-'));
+        $validator = Validator::make($request->all(), [
+                'wp_title' => 'required|unique:web_pages,wp_title,'.$request->wp_id,
+                'wp_content' => 'required',
+                'wp_slug' => 'required|unique:web_pages,wp_slug,'.$request->wp_id,
+                'wp_status' => 'required',
+            ],
+            [
+                'wp_title.required' => trans('wpm.wp_title_required'),  
+                'wp_content.required' => trans('wpm.wp_content_required'),    
+                'wp_slug.required' => trans('wpm.wp_slug_required'), 
+                'wp_slug.unique' => trans('wpm.wp_slug_unique'),   
+                'wp_status.required' => trans('wpm.wp_status_required'),   
+            ]);
+        if ($validator->fails()) {
+          $error_message = $validator->errors()->getMessages();
+          return redirect()->back()->withInput()->withErrors($validator);
+        }
+
+        $webPage = WebPage::find($request->wp_id);
+
+        $webPage->wp_slug = $request->wp_slug ?? $webPage->wp_slug;
+        $webPage->wp_title = $request->wp_title ?? $webPage->wp_title;
+        $webPage->wp_content = $request->wp_content ?? $webPage->wp_content;
+        $webPage->wp_tags = ($request->wp_tags) ?? $webPage->wp_tags;
+        $webPage->wp_status = ($request->wp_status) ?? $webPage->wp_status;
+
+        $updated = $webPage->save();
+
+        return redirect()->route('wpm-list')->with('is_updated', $updated);
+    }
+
+    /**
+     * Delete the web page.
+     * @param $wp_id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteWebPage(Request $request, $wp_id)
+    {
+      $deleted = WebPage::where([
+           'id' => $wp_id
+        ])->delete();
+
+      return redirect()->route('wpm-list')->with('is_deleted', $deleted);
+    }
+}

@@ -1,0 +1,15 @@
+<!-- Modify this blade based on your theme layout-->
+@extends('layouts.app')
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+          <h1>{{ $wp->wp_title }}</h1>
+          <h4>{{ $wp->wp_sub_title }}</h4>
+          <p>
+            {!! $wp->wp_content !!}
+          </p>
+        </div>
+    </div>
+</div>
+@endsection

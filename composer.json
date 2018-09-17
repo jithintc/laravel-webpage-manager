@@ -1,0 +1,26 @@
+{
+    "name": "jithin/cubet-wpm",
+    "description": "Web Page Manager",
+    "type": "Helper",
+    "version": "0.1",
+    "authors": [
+        {
+            "name": "Jithin",
+            "email": "jithin@cubettech.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "jithin\\CubetWpm\\": "src/jithin/CubetWpm"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "jithin\\CubetWpm\\WebPageProvider"
+            ]
+        }
+    },
+    "license": "GPL-2.0"
+}
