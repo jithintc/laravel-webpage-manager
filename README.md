@@ -1,5 +1,6 @@
 # jithin/cubet-wpm
-Web Page Manager: A laravel package to manage static content pages like about, privacy policy etc.
+Web Page Manager: A laravel package to manage static content pages like about, privacy policy etc. 
+
 ## Installation ##
 
 ```
@@ -55,4 +56,9 @@ Route::get('/about', function () {
 	return WebPage::bind('about-us');
 });
 ```
+That's it! You're done.
+
+Have fun!
+
+Jithin
 
