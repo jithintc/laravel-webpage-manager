@@ -42,7 +42,7 @@ $ php artisan make:wpm --force (Overwrite existing files by default)
 ###### Check the `routes\web.php` to find the admin routes.
 
 ## Usage
-Create new page in admin and use the page slug to invoke the page and specify the view file to be rendered. The default view will be `wpm\static`
+Create new page in admin and publish it. To invoke the page, use the system-generated page slug and specify the view file (optional) to be rendered. If the view file is not specified the default view will be `wpm\static`.
 ```
 WebPage::bind('slug', 'path\to\view')
 ```
